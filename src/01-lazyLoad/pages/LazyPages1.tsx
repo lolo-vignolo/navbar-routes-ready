@@ -7,3 +7,5 @@ export const LazyPages1 = () => {
     </>
   );
 };
+
+export default LazyPages1;

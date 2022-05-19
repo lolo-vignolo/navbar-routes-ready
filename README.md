@@ -1,46 +1,28 @@
-# Getting Started with Create React App
+**LazyLoad**
+1 - se debe importar _lazy_ de React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+2 - Los componentes que voy a utilizar con el Lazy Load deben ser exportados por defecto.
+usando el export default + component name
 
-## Available Scripts
+3 - luego voy donde he creado el objeto con las rutas y preparo todo,
+A- creo las importaciones d elos componentes
+B - cambio la interface para que me reconozca los componentes que seran utilizados con lazy load. Ya los componentes no seran JSX.Element sino que serán LazyExoticComponent<JSXComponent> | JSXComponent
+C - modifico el objeto, con la interface de arriba puedo usar en ese objetos tanto componentes con lazy load como no.
 
-In the project directory, you can run:
+```
+const Lazy1 = lazy(() => import('../01-lazyLoad/pages/LazyPages1'));
+```
 
-### `npm start`
+```
+type JSX_Element = () => JSX.Element;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+interface Route {
+  path: string;
+  Component: LazyExoticComponent<JSX_Element> | JSX_Element;
+  to: string;
+  name: string;
+}
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+4 - armado todo en el routes.ts , vuelvo al router donde tengo todas las rutas y el NavBar definido y debo important y envolcer todo el codigo en un Suspense.
+El Suspense tiene un fullBack el cual lo podemos poner para mostrar algo mientras la pagina cargue. La primera vez que cargue demora un instante, y alli aparecerá el fullback, asi por cada componente que este en lazyload mood. Pero si van a red podes ver que se carga solo un chonk una pequeña parte de toda la app, y asi es mas rapido y liviano.
