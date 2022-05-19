@@ -26,3 +26,7 @@ interface Route {
 
 4 - armado todo en el routes.ts , vuelvo al router donde tengo todas las rutas y el NavBar definido y debo important y envolcer todo el codigo en un Suspense.
 El Suspense tiene un fullBack el cual lo podemos poner para mostrar algo mientras la pagina cargue. La primera vez que cargue demora un instante, y alli aparecerá el fullback, asi por cada componente que este en lazyload mood. Pero si van a red podes ver que se carga solo un chonk una pequeña parte de toda la app, y asi es mas rapido y liviano.
+
+**Lazy load** con rutas hijas.
+
+1- modificar el archivo en el routes.ts. A las rutas que tendran rutas hijas que tienen lazy load en el path decretado en routes.ts se le debe agregar slash y asterisco.
