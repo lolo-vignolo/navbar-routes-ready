@@ -7,6 +7,7 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
+import ShoppingPage from '../02 - component-patterns/pages/ShoppingPage';
 const Navigations = () => {
   return (
     <BrowserRouter>
@@ -16,10 +17,10 @@ const Navigations = () => {
           <ul>
             <li>
               <NavLink
-                to="/home"
+                to="/shopping"
                 className={({ isActive }) => (isActive ? 'nav-active' : '')}
               >
-                Home
+                Shopping
               </NavLink>
             </li>
             <li>
@@ -43,7 +44,7 @@ const Navigations = () => {
         <Routes>
           <Route path="about" element={<h1>about</h1>} />
           <Route path="users" element={<h1>users</h1>} />
-          <Route path="home" element={<h1>home</h1>} />
+          <Route path="shopping" element={<ShoppingPage />} />
           <Route path="/*" element={<Navigate to="/home" />} />
         </Routes>
       </div>
