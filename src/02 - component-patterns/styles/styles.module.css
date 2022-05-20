@@ -2,10 +2,10 @@
   background-color: white;
   border-radius: 15px;
   color: black;
-  padding-bottom: 5px;
-  width: 250px;
   margin-right: 5px;
   margin-top: 5px;
+  padding-bottom: 5px;
+  width: 250px;
 }
 
 .productImg {
@@ -24,10 +24,10 @@
 }
 
 .buttonMinus {
-  cursor: pointer;
   background-color: transparent;
-  border: 1px solid black;
   border-radius: 5px 0px 0px 5px;
+  border: 1px solid black;
+  cursor: pointer;
   font-size: 20px;
   width: 30px;
 }
@@ -47,10 +47,10 @@
 }
 
 .buttonAdd {
-  cursor: pointer;
   background-color: transparent;
-  border: 1px solid black;
   border-radius: 0px 5px 5px 0px;
+  border: 1px solid black;
+  cursor: pointer;
   font-size: 20px;
   width: 30px;
 }

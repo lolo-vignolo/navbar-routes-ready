@@ -3,14 +3,20 @@
 //   function: (props: number) => void;
 // }
 
-import { useContext } from 'react';
+import { CSSProperties, useContext } from 'react';
 import { Productcontext } from './ProductCard';
 import styles from '../styles/styles.module.css';
 
-export const ProductButtons = () => {
+interface ButtonProps {
+  amount?: string;
+  className?: string;
+  style?: CSSProperties;
+}
+
+export const ProductButtons = ({ className, style, amount }: ButtonProps) => {
   const buttonContext = useContext(Productcontext);
   return (
-    <div className={styles.buttonsContainer}>
+    <div style={style} className={`${styles.buttonsContainer} ${className}`}>
       <button
         onClick={() => buttonContext.handleIncrease(-1)}
         className={styles.buttonMinus}
