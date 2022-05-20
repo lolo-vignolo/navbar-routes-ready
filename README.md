@@ -20,3 +20,5 @@ En este caso, uno esta determinado desde la creación del componente y a lotro l
 
 **CSS** centrar imagen
 width: calc(100% - 20px);
+
+**tener en cuenta que lo importante es ir agregando los atributos que quiero poner a cada interface y luego al componente** luego lo uso dentro del componente y listo. Acordarme de poner el signo ? para determinar que es opcional.
