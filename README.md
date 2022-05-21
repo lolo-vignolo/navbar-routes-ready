@@ -58,3 +58,33 @@ conclucion: _con el estado de una tarjeta, le doy valor al value, el cual luego 
 entonces para alcanzar el valor del _count_ debo llegar a el usando desestructuración. Por lo que el valor del value para x carta será **shoppingCart[product.id].count** .
 
 **lo que varía entre pasar de hija a padre y padre a hija** en la hija ya tengo el objetodesestructurado por lo cual ya estoy trabajando al nivel de **product**, en el padre tengo que hacer eso paso mas. Lo importante a tener en cuenta esque la fuente de información en las dos es la misma el **shoppingCart**.
+
+**importante implementacion carrito 2**
+
+```
+setShoppingCart((oldShoppingCart) => {
+      const productInCart: ProdcutInCart = oldShoppingCart[product.id] || {
+        ...product,
+        count: 0,
+      };
+
+      if (Math.max(productInCart.count + state, 0) > 0) {
+        productInCart.count += state;
+        console.log(productInCart);
+        console.log(oldShoppingCart);
+
+        return {
+          ...oldShoppingCart,
+          [product.id]: productInCart,
+        };
+      }
+
+      const { [product.id]: toDelete, ...rest } = oldShoppingCart;
+      return rest;
+
+```
+
+basicamente el **oldShoppingCart** es un objeto con todos los objetos correspondiente a cada producto dentro. Luego cada oldShoppingCart[product.id] , es cada uno de esos productos que componen al _oldShoppingCart_. teniendo en cuenta el botton que apriete coy a componer el product in card, ya que tomare el ID de ese producto para encontrar al correcpondiente dentro del oldShoppingCart y luego agrecarle una unidad. Retornare siempre el objeto grande correcpondiente el oldShoppingCart y el prodcuto con valor nuevo. Que obviamene setará dentro del objeto grande.
+La iltima parte ===> const { [product.id]: toDelete, ...rest } = oldShoppingCart;
+return rest;
+Si el boon que aprieto , ese producto llega a 0 , o sea no se cumple la maxima de arriba. Debo desestructurar el objeto padre que contiene todos los objetos de los productos dentros (oldShoppingCart) y devuelvo todo menos el producto con ese id. Por eso lo que veo es una desestructuración que saca ese producto afuera y devuelve el resto.

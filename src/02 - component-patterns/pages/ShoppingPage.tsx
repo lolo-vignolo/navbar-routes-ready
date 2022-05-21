@@ -2,51 +2,14 @@ import { ProductButtons, ProductImage, ProductTitle } from '../components';
 import { ProductCard } from '../components/ProductCard';
 import styles from '../styles/styles.module.css';
 import '../styles/custom-styles.css';
-import { Product } from '../interfaces/interfaces';
-import { useState } from 'react';
 
-const product_1 = {
-  id: '1',
-  img: './coffee-mug.png',
-  name: 'Coffee Mug',
-};
-const product_2 = {
-  id: '2',
-  img: './coffee-mug2.png',
-  name: 'Coffee Mug',
-};
-
-interface ProdcutInCart extends Product {
-  count: number;
-}
-
-const listOFProducts: Product[] = [product_1, product_2];
+import { UseShoppingCart } from '../hooks/useShoppingCart';
+import { listOfProducts } from '../data/products';
 
 const ShoppingPage = () => {
-  const [shoppingCart, setShoppingCart] = useState<{
-    [key: string]: ProdcutInCart;
-  }>({});
+  const { shoppingCart, onProductCountChange } = UseShoppingCart();
 
-  const onProductCountChange = ({
-    product,
-    state,
-  }: {
-    product: Product;
-    state: number;
-  }) => {
-    setShoppingCart((oldShoppingCart) => {
-      if (state === 0) {
-        delete oldShoppingCart[product.id];
-      } else {
-        oldShoppingCart[product.id] = {
-          ...product,
-          count: state,
-        };
-      }
-
-      return { ...oldShoppingCart };
-    });
-  };
+  const MyListOfProducts = listOfProducts;
 
   return (
     <div>
@@ -54,7 +17,7 @@ const ShoppingPage = () => {
       <hr />
 
       <div className={styles.shopping}>
-        {listOFProducts.map((product) => {
+        {MyListOfProducts.map((product) => {
           return (
             <ProductCard
               className="bg-dark"
