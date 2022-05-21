@@ -1,13 +1,9 @@
-import {
-  ProductButtons,
-  ProductCardComp,
-  ProductImage,
-  ProductTitle,
-} from '../components';
+import { ProductButtons, ProductImage, ProductTitle } from '../components';
 import { ProductCard } from '../components/ProductCard';
 import styles from '../styles/styles.module.css';
 import '../styles/custom-styles.css';
-import { calculateNewValue } from '@testing-library/user-event/dist/utils';
+import { Product } from '../interfaces/interfaces';
+import { useState } from 'react';
 
 const product_1 = {
   id: '1',
@@ -15,62 +11,93 @@ const product_1 = {
   name: 'Coffee Mug',
 };
 const product_2 = {
-  id: '1',
-  img: './logoGame.png',
+  id: '2',
+  img: './coffee-mug2.png',
   name: 'Coffee Mug',
 };
 
+interface ProdcutInCart extends Product {
+  count: number;
+}
+
+const listOFProducts: Product[] = [product_1, product_2];
+
 const ShoppingPage = () => {
+  const [shoppingCart, setShoppingCart] = useState<{
+    [key: string]: ProdcutInCart;
+  }>({});
+
+  const onProductCountChange = ({
+    product,
+    state,
+  }: {
+    product: Product;
+    state: number;
+  }) => {
+    setShoppingCart((oldShoppingCart) => {
+      if (state === 0) {
+        delete oldShoppingCart[product.id];
+      } else {
+        oldShoppingCart[product.id] = {
+          ...product,
+          count: state,
+        };
+      }
+
+      return { ...oldShoppingCart };
+    });
+  };
+
   return (
     <div>
       <h1>shoping store</h1>
       <hr />
 
       <div className={styles.shopping}>
-        <ProductCard className="bg-dark" product={product_1}>
-          <ProductImage className="custom-image" />
-          <ProductTitle className="text-white text-bold" />
-          <ProductButtons className="custom-buttons" />
-        </ProductCard>
+        {listOFProducts.map((product) => {
+          return (
+            <ProductCard
+              className="bg-dark"
+              product={product}
+              key={product.id}
+              onChange={onProductCountChange}
+              value={
+                shoppingCart[product.id] ? shoppingCart[product.id].count : 0
+              }
+            >
+              <ProductImage className="custom-image" />
+              <ProductTitle className="text-white text-bold" />
+              <ProductButtons className="custom-buttons" />
+            </ProductCard>
+          );
+        })}
+      </div>
 
-        {/* dos formas distintas de hacer lo mismo  */}
-
-        <ProductCard className="bg-dark" product={product_1}>
-          <ProductCardComp.Img className="custom-image" />
-          <ProductCardComp.Title className="text-white text-bold" />
-          <ProductCardComp.Buttons className="custom-buttons" />
-        </ProductCard>
-
-        <ProductCard
-          style={{ backgroundColor: '#33a5ff' }}
-          className="bg-dark"
-          product={product_2}
-        >
-          <ProductCardComp.Img
-            style={{
-              width: 'calc(100% - 20px)',
-              padding: '10px',
-              borderRadius: '20px',
-            }}
-          />
-          <ProductCardComp.Title
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-          <ProductCardComp.Buttons
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-        </ProductCard>
+      <div className="shopping-card">
+        {Object.entries(shoppingCart).map(([key, product]) => {
+          return (
+            <ProductCard
+              className="bg-dark"
+              key={key}
+              onChange={onProductCountChange}
+              product={product}
+              style={{ width: '100px' }}
+              value={product.count}
+            >
+              <ProductImage className="custom-image" />
+              <ProductTitle
+                className="text-white text-bold"
+                style={{ fontSize: '14px' }}
+              />
+              <ProductButtons className="custom-buttons" />
+            </ProductCard>
+          );
+        })}
+      </div>
+      <div>
+        <code>{JSON.stringify(shoppingCart)}</code>
       </div>
     </div>
   );
 };
-
 export default ShoppingPage;

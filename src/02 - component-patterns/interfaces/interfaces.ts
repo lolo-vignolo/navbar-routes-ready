@@ -9,3 +9,8 @@ export interface ProductContextProps {
   product: Product;
   state: number;
 }
+
+export interface OnChangeArgs {
+  product: Product;
+  state: number;
+}
