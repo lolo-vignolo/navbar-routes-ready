@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { OnChangeArgs, Product } from '../interfaces/interfaces';
 
 interface PropsUseProduct {
@@ -10,16 +10,7 @@ interface PropsUseProduct {
 const useProduct = ({ onChange, product, value = 0 }: PropsUseProduct) => {
   const [state, setIncrease] = useState(value);
 
-  const isOnchange = useRef(!!onChange);
-
   const handleIncrease = (value: number) => {
-    if (isOnchange.current) {
-      return onChange!({
-        product,
-        state: value,
-      });
-    }
-
     const newAmout = Math.max(state + value, 0);
     setIncrease(newAmout);
 
