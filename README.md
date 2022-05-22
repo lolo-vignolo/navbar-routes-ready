@@ -88,3 +88,28 @@ basicamente el **oldShoppingCart** es un objeto con todos los objetos correspond
 La iltima parte ===> const { [product.id]: toDelete, ...rest } = oldShoppingCart;
 return rest;
 Si el boon que aprieto , ese producto llega a 0 , o sea no se cumple la maxima de arriba. Debo desestructurar el objeto padre que contiene todos los objetos de los productos dentros (oldShoppingCart) y devuelvo todo menos el producto con ese id. Por eso lo que veo es una desestructuración que saca ese producto afuera y devuelve el resto.
+
+////////////
+/////////////
+
+**State initializer**
+consiste en poner un valor inicial al estado.
+1- agrego ese argumento al comopente padre (ShoppingPage)
+2- paso ese argumento a los hijos y lo agrego a las interfaces
+3- luego, toda la logica estará en el hook useProduct, por lo que alli usare ese argumento initialValues para implementar cosas como _valor inicial, maxAmount, MinAmount, etc_.
+
+**Formik** no es otra cosa que una función en medio de mi codigo que devuelve codigo JSX-
+me doy cuenta de ellos ua que luego de la arrow function hay parentesis () => ().
+Al Utilizarlo en medio de mi componente, debo hacer una modificacion en la interface donde esta descripto el children, ya que ahora no solo se recibira como children a React.ReactElement, sino que tambien una funcion que devuelve JSX.Element.
+ej: children: () => JSX.Element
+Ademas debo ir a donde tengo definido al children y ejecutarlo {children!()}
+
+**useCallback** devuelve un true or false.
+
+```
+const isMaxReached = useCallback(
+    () => !!initialValues?.maxCount && initialValues.maxCount === state,
+    [state, initialValues?.maxCount]
+```
+
+En la funcion pones lo que queres que se verifique, y en las dependencias las cosas que se deben tomar del exterior para estas modificaciones. Luego de llamar este callBack recibiremos un true or false.
