@@ -14,7 +14,6 @@ const ShoppingPage = () => {
       <h1>shoping store</h1>
       <hr />
       <ProductCard
-        className="bg-dark"
         product={MyProdcut}
         key={MyProdcut.id}
         initialValues={{ state: 5, maxCount: 10 }}
@@ -29,20 +28,9 @@ const ShoppingPage = () => {
           product,
         }) => (
           <>
-            <ProductImage className="custom-image" />
-            <ProductTitle className="text-white text-bold" />
-            <ProductButtons className="custom-buttons" />
-            <div className={styles.fotter}>
-              <button className={styles.reset} onClick={handleReset}>
-                Reset
-              </button>
-              {!isMaxCountReached ? (
-                <button onClick={() => handleIncrease(2)}> +2</button>
-              ) : null}
-
-              <button onClick={() => handleIncrease(-2)}> -2 </button>
-              <h2> {count}</h2>
-            </div>
+            <ProductImage />
+            <ProductTitle />
+            <ProductButtons />
           </>
         )}
       </ProductCard>
