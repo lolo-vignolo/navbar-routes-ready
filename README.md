@@ -1,46 +1,124 @@
-# Getting Started with Create React App
+**tipos de eventos**
+Para saber quetipo de evento es un submit o la funcion del onchange, declararlos como callback dentro del input. Eso luego me posiciono sobre el evento y me dice que tipo de vento es.
+decalralo asi y luego ver el tipo de evento:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+ <form onSubmit={(e) => handleSubmit(e)}>
 
-## Available Scripts
+```
 
-In the project directory, you can run:
+**Formik** dentro del hook useFormik tengo varios argumentos que puedo desesctructurar,
+entre ellos, handleSubmit, validate, initialVlues, etc.
 
-### `npm start`
+_validate_ lo puedo trabajar como una funcion aparte para hacerlo mas sencillo, y luego agregarlo dentro del hook., El onSubmit dentro del hook, es llamado desde el form usando la funcion handleSubmit que tambien desestructure del Formik.
+Para crear el **validate** below an example:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+onst FormikBasicPage = () => {
+  const validate = ({ firstName, lastName, email }: FormValues) => {
+    const errors: FormikErrors<FormValues> = {};
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    if (!firstName) {
+      errors.firstName = 'Required';
+    } else if (firstName.length < 3) {
+      errors.firstName = 'Must be 3 characters or more';
+    }
 
-### `npm test`
+    if (!lastName) {
+      errors.lastName = 'Required';
+    } else if (lastName.length < 3) {
+      errors.lastName = 'Must be 3 characters or more';
+    }
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    if (!email) {
+      errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      errors.email = 'Invalid email address';
+    }
+        return errors
+  };
+```
 
-### `npm run build`
+otros methodos interesantes de **Formik** son el **onBlur** con handleBlur , el **touched** , **errors**.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**otra forma de hacer validaciones es a traves de Yup** primero se intala , ver documentation en NPM y luego hago un metodo de validacion parecido al siguiente :
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+  validationSchema: Yup.object().shape({
+      firstName: Yup.string()
+        .required('this is required')
+        .max(15, 'max 15 characters'),
+      lastName: Yup.string()
+        .required('this is required')
+        .min(2, 'min 2 characters'),
+      email: Yup.string().email('invalid format').required('this is required'),
+    }),
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**validaciones en el HTML** para evitar usar el onChange, onBlur, value , name; puedo utilizar el metodo _getFieldProps_ el cual hace estas validaciones. Abajo la diferencia de codigos.
 
-### `npm run eject`
+```
+        <input type="text" {...getFieldProps('firstName')} />
+        {touched.firstName && errors.firstName && (
+          <span>{errors.firstName}</span>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+        <input
+          type="text"
+          name="lastName"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          value={values.lastName}
+        />
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**comodin interfaces** mer sirve para decir le voy a seguir pasando atributos, no voy a poner todos [x: string]: any;
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+##**Importante**
+**Formik abstraction useField**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+con este hook puedo crear un componente al cual le pasare unos props, lo desestructurare consiguendo el _field_ y el _meta_, donde encontrare los datos pasados en el props cuando desestructuro porps, los methods y funciones del Formik como errors, toTouched, onBlur, onCHange etc; estan en el field. El Meta se ultiliza para utilizar los metodos que hay en el field. Luego de crear el componente le pasa los atributos que quiera en el componente principal. Below an example:
 
-## Learn More
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+import { useField } from 'formik';
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+interface ImputCOmponent {
+  className?: string;
+  label: string;
+  name: string;
+  type?: string;
+  placeHolder?: string;
+  htmlFor?: string;
+  [x: string]: any;
+}
+
+const MyTextInput = ({ label, ...props }: ImputCOmponent) => {
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <label htmlFor={props.name}> {label}</label>
+      <input className={props.className} {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <span className="error"> {meta.error} </span>
+      ) : null}
+    </>
+  );
+};
+
+export default MyTextInput;
+
+
+LUEGO
+
+      <MyTextInput
+              label="First Name"
+              name="firstName"
+              type="text"
+              placeHolder="First Name"
+              htmlFor="firstName"
+            />
+
+
+```
+
+**ver casos en el codigo para el _mySelect_ y para el _checkBox_ que son similares** es importante resaltar el el name="" que le pongo a cada elemento debe hacer match con lo que defino en la interface y tambien en el **validationSchema** sino no funcionará.
