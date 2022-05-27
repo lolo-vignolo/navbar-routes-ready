@@ -122,3 +122,61 @@ LUEGO
 ```
 
 **ver casos en el codigo para el _mySelect_ y para el _checkBox_ que son similares** es importante resaltar el el name="" que le pongo a cada elemento debe hacer match con lo que defino en la interface y tambien en el **validationSchema** sino no funcionará.
+
+**validador dinamico de campos**--------**IMPORTANTE**
+
+Primero creo la variable que será un gran objeto donde estarán todas las reglas:
+
+```
+const validationsCamps: { [key: string]: any } = {};
+
+```
+
+Luego tendre que barrer todo el objeto que recibo del JSON para ver cuales será los campos que tengan validación. Para lo cual primero vere si tiene el campo validación sino le pido que continúe.
+Luego vreo una variable Let la cual tendrá el valor con lo que inicia el cada validación dentro del validationSchema **Yup.string()**. Llegado este puento ya se que el vampo tiene validaciones. Esas validaciones serán un nuevo objeto, por lo cual debo barrerlo. Desce aquí voy barriendo cada una de las validaciones usando if statement, viendo que tipo de validación y agregándole instrucciones al Yup.string() a traves del let creado.
+Por ultimo relleno el validationCamps con la estructura final solicitada por **validationSchema**. Para ese campo que tiene validación, tomo el nombre del campo y le agrego la validación.
+Finalmente le agrego el Yup.object().shape( validationsCamps).
+
+EJEMPLO JSON
+
+```
+[
+  {
+    "label": "First Name",
+    "name": "firstName",
+    "placeholder": "Enter your first name",
+    "type": "text",
+    "value": "",
+    "validation": [
+      {
+        "type": "required",
+        "message": "First name is required"
+      }
+]
+
+```
+
+EJEMPLO SCHEMA
+
+```
+for (const key of formJason) {
+  initialValues[key.name] = key.value;
+
+  if (!key.validation) continue;
+
+  let schema = Yup.string();
+
+  for (const rule of key.validation) {
+    if (rule.type === 'required') {
+      schema = schema.required(rule.message);
+    }
+    if (rule.type === 'minlength') {
+      schema = schema.min((rule as any).length, rule.message);
+    }
+  }
+
+  validationsCamps[key.name] = schema;
+}
+
+const validationSchema = Yup.object().shape(validationsCamps);
+```

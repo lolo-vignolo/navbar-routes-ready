@@ -1,0 +1,118 @@
+[
+  {
+    "label": "First Name",
+    "name": "firstName",
+    "placeholder": "Enter your first name",
+    "type": "text",
+    "value": "",
+    "validation": [
+      {
+        "type": "required",
+        "message": "First name is required"
+      },
+      {
+        "type": "minlength",
+        "message": "First name must be at least 2 characters long",
+        "length": 2
+      },
+      {
+        "type": "maxlength",
+        "message": "First name cannot be more than 25 characters long",
+        "length": 25
+      }
+    ]
+  },
+  {
+    "label": "Last Name",
+    "name": "lastName",
+    "placeholder": "Enter your last name",
+    "type": "text",
+    "value": "",
+    "validation": [
+      {
+        "type": "required",
+        "message": "First name is required"
+      },
+      {
+        "type": "minlength",
+        "message": "First name must be at least 2 characters long",
+        "length": 2
+      },
+      {
+        "type": "maxlength",
+        "message": "First name cannot be more than 25 characters long",
+        "length": 25
+      }
+    ]
+  },
+
+  {
+    "label": "Email",
+    "name": "email",
+    "placeholder": "Enter your Email",
+    "type": "email",
+    "value": "",
+    "validation": [
+      {
+        "type": "required",
+        "message": "First name is required"
+      },
+      { "type": "email", "message": "Email is not valid" }
+    ]
+  },
+  {
+    "label": "Password",
+    "name": "password",
+    "placeholder": "Enter your password",
+    "type": "password",
+    "value": "",
+    "validation": [
+      {
+        "type": "required",
+        "message": "First name is required"
+      },
+      {
+        "type": "password",
+        "message": "Password must be at least 8 characters long"
+      }
+    ]
+  },
+  {
+    "label": "Confirm Password",
+    "name": "confirmPassword",
+    "placeholder": "Enter your password again",
+    "type": "password",
+    "value": "",
+    "validation": [
+      {
+        "type": "required",
+        "message": "First name is required"
+      },
+      {
+        "type": "confirmPassword",
+        "message": "passwords must match"
+      }
+    ]
+  },
+  {
+    "label": "Favorite Game",
+    "name": "favoriteGame",
+    "placeholder": "Select your favorite game",
+    "type": "select",
+    "value": "",
+    "options": [
+      {
+        "id": "1",
+        "name": "Super Smash"
+      },
+      {
+        "id": 2,
+        "name": "Metal Hero"
+      },
+      {
+        "id": 3,
+        "name": "Street Fighter"
+      }
+    ]
+  }
+]

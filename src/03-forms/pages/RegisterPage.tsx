@@ -4,8 +4,8 @@ import '../styles/styles.css';
 
 export const RegisterPage = () => {
   const { formData, handleUser, resetForm, isValidEmail } = useForm({
-    name: '',
     email: '',
+    name: '',
     password: '',
     repeat: '',
   });
